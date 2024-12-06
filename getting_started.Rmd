@@ -1,0 +1,356 @@
+---
+title: "Getting started"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
+
+We're going to use this notebook to install some of the packages we need to analyze and visualize datat.
+
+
+
+
+Before starting installation, you will need the following software version: - R version 4.1.0 or higher - Bioconductor version 3.14 or higher
+
+Note: the Bioconductor version may be dependent on your R version. Change the Bioconductor version if needed.
+
+Bioconductor version 18 is preferable
+
+
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+install.packages("BiocManager")
+```
+
+**Installing Tidyverse and other misc CRAN packages**
+
+Tidyverse includes packages like readr, ggplot, dplyr and tidyr that are ESSENTIAL for data wrangling
+
+```{r}
+install.packages(c("tidyverse", "randomcoloR","harmony", "scales", "viridis", "cowplot", "Matrix", "pheatmap"))
+```
+
+
+
+**Loading in a file**
+
+Download this file:
+
+Then decide how you want it formatted when you press *Import Dataset*
+
+
+Paste your command into this chunk and then run it:
+
+```{r}
+
+```
+
+
+
+**Wrangling data with tidyverse**
+
+```{r}
+library(dplyr)
+starwars_data <- starwars
+
+starwars_data
+```
+
+
+List all variable names in data frame
+```{r}
+names(starwars_data)
+
+```
+
+
+Display top 10 rows in data frame
+```{r}
+head(starwars_data, n = 10)
+
+```
+
+
+Dplyr functions
+
+selecting variables of choice
+```{r}
+starwars_data %>% 
+  select(hair_color, skin_color, species)
+
+```
+
+Filtering based on height and eye_color
+```{r}
+starwars_data %>% 
+  filter(height > 90,
+         eye_color == 'blue')
+
+```
+Piping filter, select and na.omit() functions
+```{r}
+starwars_data %>% 
+  filter(height > 90,
+         eye_color == 'blue') %>%
+  select(hair_color, skin_color, species) %>%
+  na.omit()
+
+```
+Mutate height and make a new variable called height_earth
+```{r}
+starwars_data %>% 
+  mutate(height_earth = height - 20) %>%
+  select(name, height, height_earth)
+
+```
+
+Only changes the height_earth of those that belong to Tatooine
+```{r}
+starwars_data %>% 
+  mutate(height_earth = ifelse(homeworld == 'Tatooine', height - 20, height)) %>%
+  select(name, homeworld, height, height_earth)
+
+```
+Group by homeworld and count number of people in each homeworld
+```{r}
+starwars_data %>% 
+  group_by(homeworld) %>%
+  summarise(count = n())
+
+```
+
+Group by homeworld and count number of people in each homeworld
+```{r}
+starwars_data %>% 
+  group_by(homeworld) %>%
+  summarise(count = n())
+
+```
+
+
+Group by homeworld and count number of eye color types in each
+```{r}
+starwars_data %>% 
+  group_by(homeworld) %>%
+  summarise(count = n_distinct(eye_color)) 
+
+```
+
+Group by homeworld and count number of eye color types in each
+```{r}
+starwars_data %>% 
+  group_by(homeworld) %>%
+  summarise(count = n_distinct(eye_color)) 
+
+```
+
+
+
+# Data visualization examples using ggplot
+```{r}
+library(ggplot2)
+
+```
+
+
+Basic scatterplot of height and mass
+```{r}
+ggplot(starwars_data, aes(x = mass, y = height)) +
+  geom_point()
+```
+
+Basic scatterplot of height and mass colored by sex
+```{r}
+ggplot(starwars_data, aes(x = mass, y = height)) +
+  geom_point(aes(color = sex)) +
+  labs(
+    title = "Height and mass measurements",
+    x = "Mass",
+    y = "Height",
+    color = "Sex") + 
+  theme_bw()
+```
+Histogram of height
+```{r}
+ggplot(starwars_data, aes(x = height)) +
+  geom_histogram() +
+  theme_bw()
+```
+
+Bar plot of height
+```{r}
+ggplot(starwars_data, aes(x = height)) +
+  geom_histogram() +
+  theme_bw()
+```
+
+
+Violin plot
+```{r, warning = FALSE}
+ggplot(starwars_data, aes(x = gender, y = height)) +
+  geom_violin(fill = "lightblue", color = "black") +
+  geom_jitter(width = 0.2, alpha = 0.6, color = "darkblue") +
+  theme_bw() +
+  labs(
+    title = "Distribution of Height by Gender with Data Points",
+    x = "Gender",
+    y = "Height"
+  )
+```
+
+Box plot
+```{r, warning = FALSE}
+ggplot(starwars_data, aes(x = gender, y = height)) +
+  geom_boxplot(fill = "lightgreen", color = "black") +
+  theme_bw() +
+  labs(title = "Height Distribution by Gender", x = "Gender", y = "Height")
+
+```
+Density plot
+```{r}
+ggplot(starwars_data, aes(x = height)) +
+  geom_density(fill = "purple", alpha = 0.5) +
+  theme_bw() +
+  labs(title = "Density Plot of Height", x = "Height", y = "Density")
+```
+
+Line plot
+```{r}
+ggplot(starwars_data, aes(x = birth_year, y = height)) +
+  geom_line(color = "red") +
+  theme_light() +
+  labs(title = "Height vs. Birth Year", x = "Birth Year", y = "Height")
+```
+Heatmap
+```{r}
+ggplot(starwars_data, aes(x = gender, y = species, fill = height)) +
+  geom_tile(color = "white") +
+  theme_minimal() +
+  labs(title = "Heatmap of Height by Gender and Species", x = "Gender", y = "Species", fill = "Height")
+```
+
+Adding error bars
+```{r}
+error_data <- starwars_data %>%
+  group_by(gender) %>%
+  summarize(
+    height_mean = mean(height, na.rm = TRUE),
+    height_sd = sd(height, na.rm = TRUE)
+  )
+
+ggplot(error_data, aes(x = gender, y = height_mean)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = height_mean - height_sd, ymax = height_mean + height_sd), width = 0.2) +
+  theme_minimal() +
+  labs(title = "Height Mean with Error Bars by Gender", x = "Gender", y = "Mean Height")
+
+```
+
+
+Faceting
+```{r}
+ggplot(starwars_data, aes(x = height)) +
+  geom_histogram(binwidth = 10, fill = "skyblue", color = "black") +
+  facet_wrap(~ gender) +
+  theme_bw() +
+  labs(title = "Height Distribution by Gender", x = "Height", y = "Frequency")
+
+```
+
+
+Piping ggplot2 
+Show height_earth vs mass for all members of Tatooine
+```{r}
+
+starwars_data %>%
+  filter(homeworld == "Tatooine") %>%
+  mutate(height_earth = height - 20) %>%
+  na.omit() %>% 
+  ggplot(aes(x = mass, y = height_earth)) +
+  geom_point(aes(color = sex)) +
+  labs(
+    title = "Earth height and mass measurements for Tatooine",
+    x = "Mass",
+    y = "Height",
+    color = "Sex") + 
+  theme_bw()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Installing Monocle3 and Garnett
+
+Note: This software is dependent on a lot of various packages and may take a long installation time.
+
+**Install Monocle Bioconductor dependencies**
+
+```{r}
+
+# Monocle dependencies 
+BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
+                       'limma', 'lme4', 'S4Vectors', 'SingleCellExperiment',
+                       'SummarizedExperiment', 'batchelor', 'HDF5Array'))
+
+```
+
+**Install monocle3 through cole-trapnell-lab GitHub**
+
+```{r}
+install.packages("devtools")
+devtools::install_github('cole-trapnell-lab/monocle3')
+```
+
+**Install Garnett**
+
+```{r}
+
+# Garnett dependencies 
+BiocManager::install(c('org.Hs.eg.db', 'org.Mm.eg.db'))
+
+# Install Garnett
+devtools::install_github("cole-trapnell-lab/garnett", ref="monocle3")
+```
+
+**Test Installation** To ensure that Monocle3 and Garnett was installed correction, run:
+
+```{r}
+library(monocle3)
+library(garnett)
+```
+
+## Installing kBET
+
+Installion should take less than 5 min.
+
+There are two methods to install kBET:
+
+**Via Github and devtools**
+
+```{r}
+library(devtools)
+install_github('theislab/kBET')
+```
+
+**Manually**
+
+```{r}
+install.packages('kBET.zip', repos = NULL, type = 'source')
+```
+
+## Misc Packages
+
+**Installing Misc Bioconductor packages**
+
+```{r}
+BiocManager::install(c('terra', 'ggrastr', 'scuttle', 'edgeR', 'celldex'))
+```
