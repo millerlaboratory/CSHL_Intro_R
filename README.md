@@ -1,3 +1,3 @@
 # CSHL_Intro_R
 
-Please download the R Notebook and .csv file for this workshop.
+Please download "getting_started.Rmd" and "color_srgb.csv" for the Intro to R workshop.

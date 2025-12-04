@@ -299,14 +299,22 @@ Note: This software is dependent on a lot of various packages and may take a lon
 # Monocle dependencies 
 BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
                        'limma', 'lme4', 'S4Vectors', 'SingleCellExperiment',
-                       'SummarizedExperiment', 'batchelor', 'HDF5Array'))
+                       'SummarizedExperiment', 'batchelor', 'HDF5Array',
+                       'terra', 'ggrastr'))
 
 ```
+
+**Install BPCells**
+```{r}
+install.packages("devtools")
+remotes::install_github("bnprks/BPCells/r")
+```
+
+
 
 **Install monocle3 through cole-trapnell-lab GitHub**
 
 ```{r}
-install.packages("devtools")
 devtools::install_github('cole-trapnell-lab/monocle3')
 ```
 
@@ -352,5 +360,5 @@ install.packages('kBET.zip', repos = NULL, type = 'source')
 **Installing Misc Bioconductor packages**
 
 ```{r}
-BiocManager::install(c('terra', 'ggrastr', 'scuttle', 'edgeR', 'celldex'))
+BiocManager::install(c('scuttle', 'edgeR', 'celldex'))
 ```
