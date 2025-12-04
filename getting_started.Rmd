@@ -300,13 +300,17 @@ Note: This software is dependent on a lot of various packages and may take a lon
 BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
                        'limma', 'lme4', 'S4Vectors', 'SingleCellExperiment',
                        'SummarizedExperiment', 'batchelor', 'HDF5Array',
-                       'terra', 'ggrastr'))
+                       'terra', 'ggrastr', force=TRUE))
 
 ```
 
-**Install BPCells**
 ```{r}
 install.packages("devtools")
+```
+
+
+**Install BPCells**
+```{r}
 remotes::install_github("bnprks/BPCells/r")
 ```
 
@@ -352,7 +356,7 @@ install_github('theislab/kBET')
 **Manually**
 
 ```{r}
-install.packages('kBET.zip', repos = NULL, type = 'source')
+install.packages('kBET.zip', repos = NULL, type = 'source') #may no longer be necessary
 ```
 
 ## Misc Packages
