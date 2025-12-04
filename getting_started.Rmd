@@ -308,6 +308,16 @@ BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
 install.packages("devtools")
 ```
 
+In your terminal (on MacOS computers)
+
+run brew install hdf5
+
+On the provided iMACs, you will need to first run:
+sudo chown -R ecg /opt/homebrew
+
+password: cshl
+
+then install hdf5
 
 **Install BPCells**
 ```{r}
