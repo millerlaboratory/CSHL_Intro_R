@@ -308,6 +308,14 @@ BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
 install.packages("devtools")
 ```
 
+
+
+**Install BPCells** (may not be necessary)
+```{r}
+install.packages('BPCells', repos = c('https://bnprks.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
+If this doesn't work, you may need to first install the hdf5 library on your computer:
 In your terminal (on MacOS computers)
 
 run brew install hdf5
@@ -318,12 +326,6 @@ sudo chown -R ecg /opt/homebrew
 password: cshl
 
 then install hdf5
-
-**Install BPCells**
-```{r}
-remotes::install_github("bnprks/BPCells/r")
-```
-
 
 
 **Install monocle3 through cole-trapnell-lab GitHub**
