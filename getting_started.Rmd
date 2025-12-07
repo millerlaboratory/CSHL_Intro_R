@@ -34,7 +34,7 @@ install.packages(c("tidyverse", "randomcoloR","harmony", "scales", "viridis", "c
 
 **Loading in a file**
 
-Download this file:
+Download this file: "https://github.com/millerlaboratory/CSHL_Intro_R/blob/80750baf316b4854d1fbd98d8249ddbb2ff8595c/color_srgb.csv" (Should already be downloaded)
 
 Then decide how you want it formatted when you press *Import Dataset*
 
@@ -318,14 +318,18 @@ install.packages('BPCells', repos = c('https://bnprks.r-universe.dev', 'https://
 If this doesn't work, you may need to first install the hdf5 library on your computer:
 In your terminal (on MacOS computers)
 
-run brew install hdf5
+AGAIN, DON'T DO THIS IF BPCells installs
+
+run `brew install hdf5`
 
 On the provided iMACs, you will need to first run:
-sudo chown -R ecg /opt/homebrew
+`sudo chown -R ecg /opt/homebrew`
 
 password: cshl
 
 then install hdf5
+
+then run `remotes::install_github("bnprks/BPCells/r")`
 
 
 **Install monocle3 through cole-trapnell-lab GitHub**
@@ -368,7 +372,7 @@ install_github('theislab/kBET')
 **Manually**
 
 ```{r}
-install.packages('kBET.zip', repos = NULL, type = 'source') #may no longer be necessary
+#install.packages('kBET.zip', repos = NULL, type = 'source') #may no longer be necessary
 ```
 
 ## Misc Packages
